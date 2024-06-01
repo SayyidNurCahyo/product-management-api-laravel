@@ -9,11 +9,12 @@ use Tymon\JWTAuth\Facades\JWTAuth as FacadesJWTAuth;
 
 class ProductCategoryController extends Controller
 {
+
     public function index()
     {
         $categories = ProductCategory::all();
 
-        return response()->json($categories, 200);
+        return response()->json(['message' => 'Berhasil mendapatkan data kategori produk', 'category' => $categories], 200);
     }
 
     public function show($id)
@@ -21,10 +22,10 @@ class ProductCategoryController extends Controller
         $category = ProductCategory::find($id);
 
         if (!$category) {
-            return response()->json(['message' => 'Product category not found'], 404);
+            return response()->json(['message' => 'Kategori produk tidak ditemukan'], 404);
         }
 
-        return response()->json($category, 200);
+        return response()->json(['message' => 'Berhasil mendapatkan data kategori produk', 'category' => $category], 200);
     }
 
     public function store(Request $request)
@@ -43,7 +44,7 @@ class ProductCategoryController extends Controller
 
         $category->save();
 
-        return response()->json(['message' => 'Product category created successfully', 'category' => $category], 201);
+        return response()->json(['message' => 'Berhasil menambahkan data kategori produk', 'category' => $category], 201);
     }
 
     public function update(Request $request, $id)
@@ -51,7 +52,7 @@ class ProductCategoryController extends Controller
         $category = ProductCategory::find($id);
 
         if (!$category) {
-            return response()->json(['message' => 'Product category not found'], 404);
+            return response()->json(['message' => 'Kategori produk tidak ditemukan'], 404);
         }
 
         $validator = Validator::make($request->all(), [
@@ -66,7 +67,7 @@ class ProductCategoryController extends Controller
 
         $category->save();
 
-        return response()->json(['message' => 'Product category updated successfully', 'category' => $category], 200);
+        return response()->json(['message' => 'Berhasil mengubah data kategori produk', 'category' => $category], 200);
     }
 
     public function destroy($id)
@@ -74,12 +75,12 @@ class ProductCategoryController extends Controller
         $category = ProductCategory::find($id);
 
         if (!$category) {
-            return response()->json(['message' => 'Product category not found'], 404);
+            return response()->json(['message' => 'Kategori produk tidak ditemukan'], 404);
         }
 
         // Delete the product record from the database
         $category->delete();
 
-        return response()->json(['message' => 'Product category deleted successfully'], 200);
+        return response()->json(['message' => 'Berhasil menghapus data kategori produk'], 200);
     }
 }

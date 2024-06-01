@@ -9,19 +9,26 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
+    
     public function index()
     {
         $products = Product::all();
-        return response()->json($products, 200);
+        return response()->json([
+            'message' => "Berhasil mendapatkan data produk",
+            'product' => $products
+        ], 200);
     }
 
     public function show($id)
     {
         $product = Product::find($id);
         if (!$product) {
-            return response()->json(['message' => 'Product not found'], 404);
+            return response()->json(['message' => 'Produk tidak ditemukan'], 404);
         }
-        return response()->json($product, 200);
+        return response()->json([
+            'message' => "Berhasil mendapatkan data produk",
+            'product' => $product
+        ], 200);
     }
 
     public function store(Request $request)
@@ -45,14 +52,14 @@ class ProductController extends Controller
         $path = $request->file('image')->storeAs('', $filename);
         $product->image = $path;
         $product->save();
-        return response()->json(['message' => 'Product created successfully', 'product' => $product], 201);
+        return response()->json(['message' => 'Berhasil menambahkan data produk', 'product' => $product], 201);
     }
 
     public function update(int $id, Request $request)
     {
         $product = Product::find($id);
         if (!$product) {
-            return response()->json(['message' => 'Product not found'], 404);
+            return response()->json(['message' => 'Produk tidak ditemukan'], 404);
         }
         $validator = Validator::make($request->all(), [
             'product_category_id' => ['required', 'integer', 'exists:product_categories,id'],
@@ -77,19 +84,19 @@ class ProductController extends Controller
             $product->image = $path;
         }
         $product->save();
-        return response()->json(['message' => 'Product updated successfully', 'product' => $product], 200);
+        return response()->json(['message' => 'Berhasil mengubah data produk', 'product' => $product], 200);
     }
 
     public function destroy($id)
     {
         $product = Product::find($id);
         if (!$product) {
-            return response()->json(['message' => 'Product not found'], 404);
+            return response()->json(['message' => 'Produk tidak ditemukan'], 404);
         }
         if ($product->image) {
             Storage::delete($product->image);
         }
         $product->delete();
-        return response()->json(['message' => 'Product deleted successfully'], 200);
+        return response()->json(['message' => 'Berhasil menghapus data produk'], 200);
     }
 }

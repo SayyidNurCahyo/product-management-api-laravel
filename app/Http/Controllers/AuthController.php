@@ -18,14 +18,14 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
 
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'email' => ['required', 'string', 'email', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['required', 'string', 'min:6'],
         ]);
 
         if ($validator->fails()) {
@@ -37,20 +37,17 @@ class AuthController extends Controller
         ]);
 
         $user->save();
-
-        return response()->json(['message' => 'Registration successful'], 201);
+        return response()->json([
+            'message' => 'Berhasil menambahkan user baru',
+            'user' => $user['email']
+        ], 201);
     }
 
-    /**
-     * Get a JWT via given credentials.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'email' => ['required', 'string', 'email', 'exists:users,email'],
-            'password' => ['required', 'string', 'min:8'],
+            'password' => ['required', 'string', 'min:6'],
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
@@ -59,7 +56,11 @@ class AuthController extends Controller
         if (!$token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-        return $this->respondWithToken($token);
+        return response()->json([
+            'message' => 'Berhasil login',
+            'user' => $request['email'],
+            'token' => $this->respondWithToken($token)
+        ], 200);
     }
 
     /**
@@ -97,6 +98,16 @@ class AuthController extends Controller
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => 86400
-        ]);
+        ], 200);
+    }
+
+    /**
+     * Get the guard to be used during authentication.
+     *
+     * @return \Illuminate\Contracts\Auth\Guard
+     */
+    public function guard()
+    {
+        return Auth::guard();
     }
 }

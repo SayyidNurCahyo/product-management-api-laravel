@@ -35,15 +35,7 @@ Route::group([
 
 });
 
-Route::middleware('auth')->group(function () {
-    Route::get('/category-products', [ProductCategoryController::class, 'index']);
-    Route::get('/category-products/{id}', [ProductCategoryController::class, 'show']);
-    Route::post('/category-products', [ProductCategoryController::class, 'store']);
-    Route::put('/category-products/{id}', [ProductCategoryController::class, 'update']);
-    Route::delete('/category-products/{id}', [ProductCategoryController::class, 'destroy']);
-});
-
-Route::middleware('auth')->group(function () {
+Route::group(['middleware' => 'api'], function () {
     Route::get('/products', [ProductController::class, 'index']);
     Route::get('/products/{id}', [ProductController::class, 'show']);
     Route::post('/products', [ProductController::class, 'store']);
@@ -51,3 +43,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/products/{id}', [ProductController::class, 'destroy']);
 });
 
+Route::group(['middleware' => 'api'], function () {
+    Route::get('/category-products', [ProductCategoryController::class, 'index']);
+    Route::get('/category-products/{id}', [ProductCategoryController::class, 'show']);
+    Route::post('/category-products', [ProductCategoryController::class, 'store']);
+    Route::put('/category-products/{id}', [ProductCategoryController::class, 'update']);
+    Route::delete('/category-products/{id}', [ProductCategoryController::class, 'destroy']);
+});

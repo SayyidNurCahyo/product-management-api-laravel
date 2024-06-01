@@ -1,0 +1,435 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Dokumentasi API",
+        "description": "API untuk management produk",
+        "contact": {
+            "email": "sayyidnurc123@gmail.com@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000/api",
+            "description": "Demo API Server"
+        }
+    ],
+    "paths": {
+        "/auth/register": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "description": "API untuk register akun",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "examples": {
+                                "tokoweb": {
+                                    "description": "Register user tokoweb",
+                                    "value": {
+                                        "email": "tokoweb@gmail.com",
+                                        "password": "tokoweb"
+                                    }
+                                }
+                            },
+                            "schema": {
+                                "type": "object",
+                                "required": ["email", "password"],
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Berhasil menambahkan user baru"
+                    }
+                }
+            }
+        },
+        "/auth/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "description": "API untuk login menggunakan metode token / JWT",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "examples": {
+                                "tokoweb": {
+                                    "description": "Login user tokoweb",
+                                    "value": {
+                                        "email": "tokoweb@gmail.com",
+                                        "password": "tokoweb"
+                                    }
+                                }
+                            },
+                            "schema": {
+                                "type": "object",
+                                "required": ["email", "password"],
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Berhasil login"
+                    }
+                }
+            }
+        },
+        "/products": {
+            "get": {
+                "tags": [
+                    "Product"
+                ],
+                "description": "API untuk mengambil data produk dengan menggunakan metode token / JWT",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Berhasil mendapatkan data produk"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Product"
+                ],
+                "description": "API untuk membuat data produk baru dengan menggunakan metode token / JWT",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "examples": {
+                                "kursi": {
+                                    "description": "Menambahkan produk kursi",
+                                    "value": {
+                                        "product_category_id": "1",
+                                        "name": "kursi",
+                                        "price": "100000",
+                                        "image": "(Upload image)"
+                                    }
+                                }
+                            },
+                            "schema": {
+                                "type": "object",
+                                "required": ["product_category_id", "name", "price", "image"],
+                                "properties": {
+                                    "product_category_id": {
+                                        "type": "number"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "price": {
+                                        "type": "number"
+                                    },
+                                    "image": {
+                                        "type": "string",
+                                        "format": "binary",
+                                        "description": "Upload image produk"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Berhasil menambahkan data produk"
+                    }
+                }
+            }
+        },
+        "/products/{id}": {
+            "get": {
+                "tags": [
+                    "Product"
+                ],
+                "description": "API untuk mengambil data produk berdasarkan id dengan menggunakan metode token / JWT",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "name": "id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Berhasil mendapatkan data produk"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Product"
+                ],
+                "description": "API untuk mengubah data produk berdasarkan id dengan menggunakan metode token / JWT",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "name": "id",
+                        "in": "path"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "examples": {
+                                "kursi": {
+                                    "description": "Mengubah produk kursi",
+                                    "value": {
+                                        "product_category_id": "1",
+                                        "name": "kursi",
+                                        "price": "100000",
+                                        "image": "(Upload image)"
+                                    }
+                                }
+                            },
+                            "schema": {
+                                "type": "object",
+                                "required": ["product_category_id", "name", "price", "image"],
+                                "properties": {
+                                    "product_category_id": {
+                                        "type": "number"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "price": {
+                                        "type": "number"
+                                    },
+                                    "image": {
+                                        "type": "string",
+                                        "format": "binary",
+                                        "description": "Upload image produk"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Berhasil mengubah data produk"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Product"
+                ],
+                "description": "API untuk menghapus data produk berdasarkan id dengan menggunakan metode token / JWT",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "name": "id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Berhasil menghapus data produk"
+                    }
+                }
+            }
+        },
+        "/category-products": {
+            "get": {
+                "tags": [
+                    "Category Product"
+                ],
+                "description": "API untuk mengambil data kategori produk dengan menggunakan metode token / JWT",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Berhasil mendapatkan data kategori produk"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Category Product"
+                ],
+                "description": "API untuk membuat data kategori produk baru dengan menggunakan metode token / JWT",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "examples": {
+                                "perabotan": {
+                                    "description": "Menambahkan kategori produk perabotan",
+                                    "value": {
+                                        "name": "perabotan"
+                                    }
+                                }
+                            },
+                            "schema": {
+                                "type": "object",
+                                "required": ["name"],
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Berhasil menambahkan data kategori produk"
+                    }
+                }
+            }
+        },
+        "/category-products/{id}": {
+            "get": {
+                "tags": [
+                    "Category Product"
+                ],
+                "description": "API untuk mengambil data kategori produk berdasarkan id dengan menggunakan metode token / JWT",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "name": "id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Berhasil mendapatkan data kategori produk"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Category Product"
+                ],
+                "description": "API untuk mengubah data kategori produk berdasarkan id dengan menggunakan metode token / JWT",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "name": "id",
+                        "in": "path"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "examples": {
+                                "perabotan": {
+                                    "description": "Mengubah kategori produk perabotan",
+                                    "value": {
+                                        "name": "perabotan"
+                                    }
+                                }
+                            },
+                            "schema": {
+                                "type": "object",
+                                "required": ["name"],
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Berhasil mengubah data kategori produk"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Category Product"
+                ],
+                "description": "API untuk menghapus data kategori produk berdasarkan id dengan menggunakan metode token / JWT",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "name": "id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Berhasil menghapus data kategori produk"
+                    }
+                }
+            }
+        }
+    }
+}
